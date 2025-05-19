@@ -260,7 +260,7 @@ async function startApp() {
 
     app.get('/tags/:tag', async (req, res) => {
         await allRoutes(req, res);
-        res.render('tag', { vars: defaults, title: `#${req.params.tag.toLowerCase().replaceAll(" ", "-")}`, cms, pageviews: req.pageViews, tag: req.params.tag });
+        res.render('tag', { vars: defaults, title: `#${req.params.tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "")}`, cms, pageviews: req.pageViews, tag: req.params.tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") });
     });
 
     app.get('/polls', async (req, res) => {

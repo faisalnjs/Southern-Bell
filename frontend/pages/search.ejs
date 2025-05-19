@@ -13,7 +13,7 @@
 	for (article of cms.articles) {
 		if (article.tags) {
 			for (tag of article.tags) {
-				tag = tag.toLowerCase();
+				tag = tag.trim().toLowerCase();
 				if (!tags[tag]) {
 					tags[tag] = [];
 				};
@@ -25,7 +25,7 @@
 	for (tag of Object.keys(tags).sort()) {
 		sortedTagsObj[tag] = tags[tag];
 	};
-	const filteredTags = Object.keys(tags).filter(tag => tag.toLowerCase().includes(query));
+	const filteredTags = Object.keys(tags).filter(tag => tag.trim().toLowerCase().includes(query));
 	const filteredPolls = cms.polls.filter(poll => {
 		const question = poll.question.toLowerCase();
 		const description = poll.description.toLowerCase();
@@ -73,7 +73,7 @@
 		</a>
 		<% }); %>
 		<% filteredTags.sort((a, b) => a.localeCompare(b)).forEach(tag => { %>
-		<a class="article" href="<%- vars.domain %>/tags/<%= tag.replaceAll(" ", "-") %>" title="Tag: <%= tag %>">
+		<a class="article" href="<%- vars.domain %>/tags/<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %>" title="Tag: <%= tag %>">
 			<img src=" " alt="">
 			<div class="inner">
 				<h3>Tag: <%= tag %></h3>

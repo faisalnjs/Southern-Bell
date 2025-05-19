@@ -6,7 +6,7 @@
 		if (article.tags === null) {
 			return false;
 		} else {
-			return article.tags.map(tag => tag.toLowerCase().replaceAll(" ", "-")).includes(tag.toLowerCase().replaceAll(" ", "-"));
+			return article.tags.map(tag => tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "")).includes(tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", ""));
 		};
 	}).filter(article => !article.unlisted);
 	function ifYesterday(date) { 
