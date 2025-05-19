@@ -390,11 +390,25 @@ async function startApp() {
             }
         });
         cms.newspapers.forEach(post => {
+            var newspaperContributors = [{
+                name: "Faisal N",
+                email: "contact@faisaln.com",
+                link: "https://faisaln.com/"
+            }];
+            post.articles.forEach(article => {
+                article = cms.articles.find(article1 => article1._id === article._id);
+                if (!article) return;
+                if ((article.author != "") && (article.author != null) && !newspaperContributors.find(contributor => contributor.name === article.author.trim())) newspaperContributors.push({
+                    name: article.author.trim(),
+                    email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
+                    link: `${cms.siteDetails[0]['domain-production']}/authors/${article.author.trim().replaceAll(" ", "-").toLowerCase()}`
+                });
+            });
             feed.addItem({
                 title: post.title,
-                id: `${cms.siteDetails[0]['domain-production']}${defaults.slugify(post.slug)}`,
-                link: `${cms.siteDetails[0]['domain-production']}${defaults.slugify(post.slug)}`,
-                description: `${post.articles.length} Article(s)`,
+                id: `${cms.siteDetails[0]['domain-production']}/${defaults.slugify(post.slug)}`,
+                link: `${cms.siteDetails[0]['domain-production']}/${defaults.slugify(post.slug)}`,
+                description: `${post.articles.length} Article${(post.articles.length === 1) ? '' : 's'}`,
                 content: post.content,
                 author: [
                     {
@@ -403,13 +417,7 @@ async function startApp() {
                         link: cms.siteDetails[0]['domain-production']
                     }
                 ],
-                contributor: [
-                    {
-                        name: "Faisal N",
-                        email: "contact@faisaln.com",
-                        link: "https://faisaln.com/"
-                    }
-                ],
+                contributor: newspaperContributors,
                 date: new Date(post.date),
                 image: `${defaults.asset_prefix}${post.image.path}`
             });
@@ -417,17 +425,19 @@ async function startApp() {
         cms.articles.filter(article => !article.unlisted).forEach(post => {
             feed.addItem({
                 title: post.title,
-                id: `${cms.siteDetails[0]['domain-production']}${defaults.slugify(post.slug)}`,
-                link: `${cms.siteDetails[0]['domain-production']}${defaults.slugify(post.slug)}`,
+                id: `${cms.siteDetails[0]['domain-production']}/${defaults.slugify(post.slug)}`,
+                link: `${cms.siteDetails[0]['domain-production']}/${defaults.slugify(post.slug)}`,
                 description: post.description,
                 content: post.content,
-                author: [
-                    {
-                        name: cms.siteDetails[0].title,
-                        email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
-                        link: cms.siteDetails[0]['domain-production']
-                    }
-                ],
+                author: [((post.author != "") && (post.author != null)) ? {
+                    name: post.author.trim(),
+                    email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
+                    link: `${cms.siteDetails[0]['domain-production']}/authors/${post.author.trim().replaceAll(" ", "-").toLowerCase()}`
+                } : {
+                    name: cms.siteDetails[0].title,
+                    email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
+                    link: cms.siteDetails[0]['domain-production']
+                }],
                 contributor: [
                     {
                         name: "Faisal N",
