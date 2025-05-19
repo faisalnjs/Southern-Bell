@@ -26,9 +26,9 @@
 					<% if (article.tags != null) { %><p>Tags: <% for (tag of article.tags) { %><a href="<%- vars.domain %>/tags/<%= tag.replaceAll(" ", "-") %>" title="#<%= tag.toLowerCase().replaceAll(" ", "-") %>">#<%= tag.toLowerCase().replaceAll(" ", "-") %></a> <% } %></p><% } %>
 				</div>
 				<div class="author">
-					<a href="<%- vars.domain %>/authors/<%= (((article.author != "") && (article.author != null)) ? article.author : cms.siteDetails[0].title).replaceAll(" ", "-").toLowerCase() %>"><img src="<%- vars.asset_prefix %><% if ((article.author != "") && (article.author != null)) { author = cms.authors.find(author => author.name === article.author); if (author) { %><%= author.image.path %><% } else { %><%= cms.siteDetails[0].unknown.path %><% } %><% } else { %><%= cms.siteDetails[0].favicon.path %><% } %>" alt="Author" /></a>
+					<a href="<%- vars.domain %>/authors/<%= (((article.author != "") && (article.author != null)) ? article.author : cms.siteDetails[0].title).trim().replaceAll(" ", "-").toLowerCase() %>"><img src="<%- vars.asset_prefix %><% if ((article.author != "") && (article.author != null)) { author = cms.authors.find(author => author.name.trim() === article.author.trim()); if (author) { %><%= author.image.path %><% } else { %><%= cms.siteDetails[0].unknown.path %><% } %><% } else { %><%= cms.siteDetails[0].favicon.path %><% } %>" alt="Author" /></a>
 					<div class="info">
-						<h4><% if ((article.author != "") && (article.author != null)) { %><%= article.author %><% } else { %><%= cms.siteDetails[0].title %><% } %></h4>
+						<h4><% if ((article.author != "") && (article.author != null)) { %><%= article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %><% } %></h4>
 						<h5><a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a> - Writer<% if ((article.author != "") && (article.author != null)) { %><% } else { %>s<% } %></h5>
 					</div>
 				</div>
@@ -62,7 +62,7 @@
 		<% } %>
 		<% if ((article.content != null) && (article.content != '')) { %>
 		<div class="content">
-			<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
+			<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
 			<%- article.content.replaceAll('<img src="/', '<img loading="lazy" src="' + vars.asset_url) %>
 		</div>
 		<% } %>

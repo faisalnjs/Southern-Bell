@@ -31,7 +31,7 @@
 						<img <% if (i > 6) { %>loading="lazy"<% } %> src="<% if (article.images[0] != null) { %><%- vars.asset_prefix %><%= article.images[0].path %>" <% if ((article.images[0].height / article.images[0].width) > 0.60) { %>style="width: min-content;" <% if (article.images[0].description != "") { %>alt="<%= article.images[0].description %>" <% } %><% } } else { %> "<% } %> />
 						<h3><%= article.title %></h3>
 						<% if (article.description != null) { %><h4><% if (article.description.length > 50) { %><%= article.description.slice(0, 47) %>...<% } else { %><%= article.description %><% } %></h4><% } %>
-						<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article.author != "") && (article.author != null)) { %> / <%= article.author %><% } %></p>
+						<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article.author != "") && (article.author != null)) { %> / <%= article.author.trim() %><% } %></p>
 					</div>
 				</a>
 				<% } } else { %>No articles found<% } %>

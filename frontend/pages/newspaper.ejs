@@ -65,7 +65,7 @@
 					<% } %>
 					<h2><%= article.title %></h2>
 					<% if ((article.content != null) && (article.content != '')) { %>
-					<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
+					<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
 					<%- article.content.replaceAll('<img src="/', `<img ${(n > 2) ? 'loading="lazy"' : ''} src="${vars.asset_url}`) %>
 					<% } %>
 				</div>
@@ -97,7 +97,7 @@
 				<% } %>
 				<h2><%= article.title %></h2>
 				<% if ((article.content != null) && (article.content != '')) { %>
-				<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
+				<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
 				<%- article.content.replaceAll('<img src="/', `<img ${(n > 2) ? 'loading="lazy"' : ''} src="${vars.asset_url}`) %>
 				<% } %>
 			</div>

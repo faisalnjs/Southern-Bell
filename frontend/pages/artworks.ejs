@@ -24,7 +24,7 @@
 					<img <% if (i > 6) { %>loading="lazy"<% } %> src="<% if (artwork.artwork != null) { %><%- vars.asset_prefix %><%= artwork.artwork.path %>" <% if ((artwork.artwork.height / artwork.artwork.width) > 0.60) { %>style="width: min-content;" <% if (artwork.artwork.description != "") { %>alt="<%= artwork.artwork.description %>" <% } %><% } } else { %> "<% } %> />
 					<h3><%= artwork.title %></h3>
 					<% if (artwork.description != null) { %><h4><% if (artwork.description.length > 50) { %><%= artwork.description.slice(0, 47) %>...<% } else { %><%= artwork.description %><% } %></h4><% } %>
-					<p><% var date = new Date(artwork.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((artwork.author != "") && (artwork.author != null)) { %> / <%= artwork.author %><% } %></p>
+					<p><% var date = new Date(artwork.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((artwork.author != "") && (artwork.author != null)) { %> / <%= artwork.author.trim() %><% } %></p>
 				</div>
 			</a>
 			<% } %>

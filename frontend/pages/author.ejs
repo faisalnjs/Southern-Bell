@@ -15,7 +15,7 @@
 	<%- include('../partials/header.ejs'); %>
 	<div class="banner" style="background-image: url('<%- vars.asset_prefix %><%= cms.siteDetails[0].authorBanner.path %>');">
 		<% if (author && (author.image != null)) { %><img src="<%- vars.asset_prefix %><%= author.image.path %>" alt="<%= (articles[0] || artworks[0]).author %>" /><% } %>
-		<h1><%= (articles[0] || artworks[0]).author %></h1>
+		<h1><%= (articles[0] || artworks[0]).author.trim() %></h1>
 		<h3><%- (articles.length === 0) ? 'No' : articles.length %> Article<% if (articles.length != 1) { %>s<% } %> | <%- (artworks.length === 0) ? 'No' : artworks.length %> Artwork<% if (artworks.length != 1) { %>s<% } %></h3>
 	</div>
 	<% if (articles.length > 0) { %>

@@ -26,9 +26,9 @@
 					<% if (artwork.tags != null) { %><p>Tags: <% for (tag of artwork.tags) { %><a href="<%- vars.domain %>/tags/<%= tag.replaceAll(" ", "-") %>" title="#<%= tag.toLowerCase().replaceAll(" ", "-") %>">#<%= tag.toLowerCase().replaceAll(" ", "-") %></a> <% } %></p><% } %>
 				</div>
 				<div class="author">
-					<a href="<%- vars.domain %>/authors/<%= (((artwork.author != "") && (artwork.author != null)) ? artwork.author : cms.siteDetails[0].title).replaceAll(" ", "-").toLowerCase() %>"><img src="<%- vars.asset_prefix %><% if ((artwork.author != "") && (artwork.author != null)) { %><%= cms.siteDetails[0].unknown.path %><% } else { %><%= cms.siteDetails[0].favicon.path %><% } %>" alt="Author" /></a>
+					<a href="<%- vars.domain %>/authors/<%= (((artwork.author != "") && (artwork.author != null)) ? artwork.author : cms.siteDetails[0].title).trim().replaceAll(" ", "-").toLowerCase() %>"><img src="<%- vars.asset_prefix %><% if ((artwork.author != "") && (artwork.author != null)) { %><%= cms.siteDetails[0].unknown.path %><% } else { %><%= cms.siteDetails[0].favicon.path %><% } %>" alt="Author" /></a>
 					<div class="info">
-						<h4><% if ((artwork.author != "") && (artwork.author != null)) { %><%= artwork.author %><% } else { %><%= cms.siteDetails[0].title %><% } %></h4>
+						<h4><% if ((artwork.author != "") && (artwork.author != null)) { %><%= artwork.author.trim() %><% } else { %><%= cms.siteDetails[0].title %><% } %></h4>
 						<h5><a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a> - Writer<% if ((artwork.author != "") && (artwork.author != null)) { %><% } else { %>s<% } %></h5>
 					</div>
 				</div>

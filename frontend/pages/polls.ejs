@@ -23,7 +23,7 @@
 				<div class="inner">
 					<h3><%= poll.question %></h3>
 					<% if (poll.description != null) { %><h4><% if (poll.description.length > 50) { %><%= poll.description.slice(0, 47) %>...<% } else { %><%= poll.description %><% } %></h4><% } %>
-					<p><% var votes = 0; for (response of responses) { if (response.poll_id === poll._id) { votes++ }; }; %><%= votes %> Vote<% if (votes != 1) { %>s<% } %> / <% var date = new Date(poll.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((poll.author != "") && (poll.author != null)) { %> / <%= poll.author %><% } %></p>
+					<p><% var votes = 0; for (response of responses) { if (response.poll_id === poll._id) { votes++ }; }; %><%= votes %> Vote<% if (votes != 1) { %>s<% } %> / <% var date = new Date(poll.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((poll.author != "") && (poll.author != null)) { %> / <%= poll.author.trim() %><% } %></p>
 				</div>
 			</a>
 			<% } %>
