@@ -406,8 +406,8 @@ async function startApp() {
             });
             feed.addItem({
                 title: post.title,
-                id: `${cms.siteDetails[0]['domain-production']}/${defaults.slugify(post.slug)}`,
-                link: `${cms.siteDetails[0]['domain-production']}/${defaults.slugify(post.slug)}`,
+                id: `${cms.siteDetails[0]['domain-production']}/newspapers/${defaults.slugify(post.slug)}`,
+                link: `${cms.siteDetails[0]['domain-production']}/newspapers/${defaults.slugify(post.slug)}`,
                 description: `${post.articles.length} Article${(post.articles.length === 1) ? '' : 's'}`,
                 content: post.content,
                 author: [
@@ -425,8 +425,8 @@ async function startApp() {
         cms.articles.filter(article => !article.unlisted).forEach(post => {
             feed.addItem({
                 title: post.title,
-                id: `${cms.siteDetails[0]['domain-production']}/${defaults.slugify(post.slug)}`,
-                link: `${cms.siteDetails[0]['domain-production']}/${defaults.slugify(post.slug)}`,
+                id: `${cms.siteDetails[0]['domain-production']}/articles/${new Date(post.date).getFullYear()}/${defaults.slugify(post.slug)}`,
+                link: `${cms.siteDetails[0]['domain-production']}/articles/${new Date(post.date).getFullYear()}/${defaults.slugify(post.slug)}`,
                 description: post.description,
                 content: post.content,
                 author: [((post.author != "") && (post.author != null)) ? {
