@@ -633,11 +633,6 @@ body:has(.alert) .loading {
 	padding: 50px;
 }
 
-.articles .grid .article img {
-	width: 100% !important;
-	height: unset !important;
-}
-
 .articles.individual .grid .article {
 	border-bottom: 1px solid #c7c7c7;
 	color: var(--background);
