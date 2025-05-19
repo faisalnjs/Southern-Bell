@@ -346,8 +346,8 @@ async function startApp() {
     app.get('/authors/:author', async (req, res) => {
         await allRoutes(req, res);
         var author = cms.authors.find(author => (author.name.trim().toLowerCase() === req.params.author.trim().replaceAll('-', ' ').toLowerCase()) && (!author.unlisted));
-        var articles = cms.articles.filter(article => article.author.trim() && (article.author.trim().toLowerCase() === req.params.author.trim().replaceAll('-', ' ').toLowerCase()) && !article.unlisted);
-        var artworks = cms.artworks.filter(artwork => artwork.author.trim() && (artwork.author.trim().toLowerCase() === req.params.author.trim().replaceAll('-', ' ').toLowerCase()) && !artwork.unlisted);
+        var articles = cms.articles.filter(article => article.author && (article.author.trim().toLowerCase() === req.params.author.trim().replaceAll('-', ' ').toLowerCase()) && !article.unlisted);
+        var artworks = cms.artworks.filter(artwork => artwork.author && (artwork.author.trim().toLowerCase() === req.params.author.trim().replaceAll('-', ' ').toLowerCase()) && !artwork.unlisted);
         if ((articles.length > 0) || (artworks.length > 0)) return res.render('author', { vars: defaults, title: (articles[0] || artworks[0]).author.trim(), cms, pageviews: req.pageViews, author, articles, artworks });
         return res.render('404', { vars: defaults, title: '404', cms, pageviews: req.pageViews });
     });

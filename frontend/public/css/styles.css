@@ -747,14 +747,14 @@ body:has(.alert) .loading {
 
 .article-i .image,
 .article-i img {
-	box-shadow: var(--theme) 0px 1px 4px;
+	box-shadow: var(--theme) 0px 0px 0px 1px;
 	transition: 0.5s;
 	width: 100%;
 }
 
 .article-i .image:hover,
 .article-i img:hover {
-	box-shadow: var(--theme) 0px 0px 70px -15px;
+	box-shadow: var(--theme) 0px 0px 0px 2px;
 	transition: 0.5s;
 }
 
