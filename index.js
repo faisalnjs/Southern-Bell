@@ -211,6 +211,91 @@ async function startApp() {
             });
     };
 
+    async function getFeed() {
+        const feed = new Feed({
+            title: cms.siteDetails[0].title,
+            description: `News feed for ${cms.siteDetails[0].title}`,
+            id: cms.siteDetails[0]['domain-production'],
+            link: cms.siteDetails[0]['domain-production'],
+            language: "en",
+            image: `${defaults.asset_prefix}${cms.siteDetails[0].logo.path}`,
+            favicon: `${defaults.asset_prefix}${cms.siteDetails[0].favicon.path}`,
+            copyright: `All rights reserved ${new Date().getFullYear()}, ${cms.siteDetails[0].title}`,
+            generator: "Dango Web Solutions",
+            feedLinks: {
+                rss: `${cms.siteDetails[0]['domain-production']}/rss`,
+                json: `${cms.siteDetails[0]['domain-production']}/json`,
+                atom: `${cms.siteDetails[0]['domain-production']}/atom`
+            },
+            author: {
+                name: cms.siteDetails[0].title,
+                email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
+                link: cms.siteDetails[0]['domain-production']
+            }
+        });
+        cms.newspapers.forEach(post => {
+            var newspaperContributors = [{
+                name: "Faisal N",
+                email: "contact@faisaln.com",
+                link: "https://faisaln.com/"
+            }];
+            post.articles.forEach(article => {
+                article = cms.articles.find(article1 => article1._id === article._id);
+                if (!article) return;
+                if ((article.author != "") && (article.author != null) && !newspaperContributors.find(contributor => contributor.name === article.author.trim())) newspaperContributors.push({
+                    name: article.author.trim(),
+                    email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
+                    link: `${cms.siteDetails[0]['domain-production']}/authors/${article.author.trim().replaceAll(" ", "-").toLowerCase()}`
+                });
+            });
+            feed.addItem({
+                title: post.title,
+                id: `${cms.siteDetails[0]['domain-production']}/newspapers/${defaults.slugify(post.slug)}`,
+                link: `${cms.siteDetails[0]['domain-production']}/newspapers/${defaults.slugify(post.slug)}`,
+                description: `${post.articles.length} Article${(post.articles.length === 1) ? '' : 's'}`,
+                content: post.content,
+                author: [
+                    {
+                        name: cms.siteDetails[0].title,
+                        email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
+                        link: cms.siteDetails[0]['domain-production']
+                    }
+                ],
+                contributor: newspaperContributors,
+                date: new Date(post.date),
+                image: `${defaults.asset_prefix}${post.image.path}`
+            });
+        });
+        cms.articles.filter(article => !article.unlisted).forEach(post => {
+            feed.addItem({
+                title: post.title,
+                id: `${cms.siteDetails[0]['domain-production']}/articles/${new Date(post.date).getFullYear()}/${defaults.slugify(post.slug)}`,
+                link: `${cms.siteDetails[0]['domain-production']}/articles/${new Date(post.date).getFullYear()}/${defaults.slugify(post.slug)}`,
+                description: post.description,
+                content: post.content,
+                author: [((post.author != "") && (post.author != null)) ? {
+                    name: post.author.trim(),
+                    email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
+                    link: `${cms.siteDetails[0]['domain-production']}/authors/${post.author.trim().replaceAll(" ", "-").toLowerCase()}`
+                } : {
+                    name: cms.siteDetails[0].title,
+                    email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
+                    link: cms.siteDetails[0]['domain-production']
+                }],
+                contributor: [
+                    {
+                        name: "Faisal N",
+                        email: "contact@faisaln.com",
+                        link: "https://faisaln.com/"
+                    }
+                ],
+                date: new Date(post.date),
+                image: (post.images[0]) ? `${defaults.asset_prefix}${post.images[0].path}` : ""
+            });
+        });
+        return feed;
+    };
+
     // Routes
 
     app.get('/', async (req, res) => {
@@ -260,7 +345,7 @@ async function startApp() {
 
     app.get('/tags/:tag', async (req, res) => {
         await allRoutes(req, res);
-        res.render('tag', { vars: defaults, title: `#${req.params.tag.toLowerCase().replaceAll(" ", "-")}`, cms, pageviews: req.pageViews, tag: req.params.tag });
+        res.render('tag', { vars: defaults, title: `#${req.params.tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "")}`, cms, pageviews: req.pageViews, tag: req.params.tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") });
     });
 
     app.get('/polls', async (req, res) => {
@@ -345,10 +430,10 @@ async function startApp() {
 
     app.get('/authors/:author', async (req, res) => {
         await allRoutes(req, res);
-        var author = cms.authors.find(author => (author.name.toLowerCase() === req.params.author.replaceAll('-', ' ').toLowerCase()) && (!author.unlisted));
-        var articles = cms.articles.filter(article => article.author && (article.author.toLowerCase() === req.params.author.replaceAll('-', ' ').toLowerCase()) && !article.unlisted);
-        var artworks = cms.artworks.filter(artwork => artwork.author && (artwork.author.toLowerCase() === req.params.author.replaceAll('-', ' ').toLowerCase()) && !artwork.unlisted);
-        if ((articles.length > 0) || (artworks.length > 0)) return res.render('author', { vars: defaults, title: (articles[0] || artworks[0]).author, cms, pageviews: req.pageViews, author, articles, artworks });
+        var author = cms.authors.find(author => (author.name.trim().toLowerCase() === req.params.author.trim().replaceAll('-', ' ').toLowerCase()) && (!author.unlisted));
+        var articles = cms.articles.filter(article => article.author && ((article.author.trim().toLowerCase() === req.params.author.trim().replaceAll('-', ' ').toLowerCase()) || article.author.trim().toLowerCase().split(/ and |, | & /).includes(req.params.author.trim().replaceAll('-', ' ').toLowerCase())) && !article.unlisted);
+        var artworks = cms.artworks.filter(artwork => artwork.author && ((artwork.author.trim().toLowerCase() === req.params.author.trim().replaceAll('-', ' ').toLowerCase()) || article.author.trim().toLowerCase().split(/ and |, | & /).includes(req.params.author.trim().replaceAll('-', ' ').toLowerCase()) )&& !artwork.unlisted);
+        if ((articles.length > 0) || (artworks.length > 0)) return res.render('author', { vars: defaults, title: (articles[0] || artworks[0]).author.trim(), cms, pageviews: req.pageViews, author, articles, artworks });
         return res.render('404', { vars: defaults, title: '404', cms, pageviews: req.pageViews });
     });
 
@@ -369,78 +454,43 @@ async function startApp() {
     });
 
     app.get('/rss', async (req, res) => {
-        const feed = new Feed({
-            title: cms.siteDetails[0].title,
-            description: `RSS Feed for ${cms.siteDetails[0].title}`,
-            id: cms.siteDetails[0]['domain-production'],
-            link: cms.siteDetails[0]['domain-production'],
-            language: "en",
-            image: `${defaults.asset_prefix}${cms.siteDetails[0].logo.path}`,
-            favicon: `${defaults.asset_prefix}${cms.siteDetails[0].favicon.path}`,
-            copyright: `All rights reserved ${new Date().getFullYear()}, ${cms.siteDetails[0].title}`,
-            generator: "Dango Web Solutions",
-            feedLinks: {
-                json: `${cms.siteDetails[0]['domain-production']}/json`,
-                atom: `${cms.siteDetails[0]['domain-production']}/atom`
-            },
-            author: {
-                name: cms.siteDetails[0].title,
-                email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
-                link: cms.siteDetails[0]['domain-production']
-            }
-        });
-        cms.newspapers.forEach(post => {
-            feed.addItem({
-                title: post.title,
-                id: `${cms.siteDetails[0]['domain-production']}${defaults.slugify(post.slug)}`,
-                link: `${cms.siteDetails[0]['domain-production']}${defaults.slugify(post.slug)}`,
-                description: `${post.articles.length} Article(s)`,
-                content: post.content,
-                author: [
-                    {
-                        name: cms.siteDetails[0].title,
-                        email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
-                        link: cms.siteDetails[0]['domain-production']
-                    }
-                ],
-                contributor: [
-                    {
-                        name: "Faisal N",
-                        email: "contact@faisaln.com",
-                        link: "https://faisaln.com/"
-                    }
-                ],
-                date: new Date(post.date),
-                image: `${defaults.asset_prefix}${post.image.path}`
-            });
-        });
-        cms.articles.filter(article => !article.unlisted).forEach(post => {
-            feed.addItem({
-                title: post.title,
-                id: `${cms.siteDetails[0]['domain-production']}${defaults.slugify(post.slug)}`,
-                link: `${cms.siteDetails[0]['domain-production']}${defaults.slugify(post.slug)}`,
-                description: post.description,
-                content: post.content,
-                author: [
-                    {
-                        name: cms.siteDetails[0].title,
-                        email: `admin@${cms.siteDetails[0]['domain-production'].split('://')[1]}`,
-                        link: cms.siteDetails[0]['domain-production']
-                    }
-                ],
-                contributor: [
-                    {
-                        name: "Faisal N",
-                        email: "contact@faisaln.com",
-                        link: "https://faisaln.com/"
-                    }
-                ],
-                date: new Date(post.date),
-                image: (post.images[0]) ? `${defaults.asset_prefix}${post.images[0].path}` : ""
-            });
-        });
         res.set('Content-Type', 'text/xml');
-        res.send(feed.rss2());
+        res.send((await getFeed()).rss2());
+    });
+
+    app.get('/feed.xml', async (req, res) => {
+        res.set('Content-Type', 'text/xml');
+        res.send((await getFeed()).rss2());
+    });
+
+    app.get('/rss-feed.xml', async (req, res) => {
+        res.set('Content-Type', 'text/xml');
+        res.send((await getFeed()).rss2());
+    });
+
+    app.get('/json', async (req, res) => {
+        res.set('Content-Type', 'application/json');
+        res.send((await getFeed()).json1());
+    });
+
+    app.get('/feed.json', async (req, res) => {
+        res.set('Content-Type', 'application/json');
+        res.send((await getFeed()).json1());
+    });
+
+    app.get('/json-feed.json', async (req, res) => {
+        res.set('Content-Type', 'application/json');
+        res.send((await getFeed()).json1());
+    });
+
+    app.get('/atom', async (req, res) => {
+        res.set('Content-Type', 'application/atom+xml');
+        res.send((await getFeed()).atom1());
+    });
+
+    app.get('/atom-feed.xml', async (req, res) => {
+        res.set('Content-Type', 'application/atom+xml');
+        res.send((await getFeed()).atom1());
     });
 
     app.get('/denycookies', async (req, res) => {

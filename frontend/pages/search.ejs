@@ -5,7 +5,7 @@
 	<% const filteredArticles = cms.articles.filter(article => {
 		const title = article.title.toLowerCase();
 		const content = ((article.content != null) && (article.content != '')) ? article.content.toLowerCase() : '';
-		const author = (((article.author != "") && (article.author != null)) ? article.author : cms.siteDetails[0].title).toLowerCase();
+		const author = (((article.author != "") && (article.author != null)) ? article.author.trim() : cms.siteDetails[0].title).toLowerCase();
 		return title.includes(query) || content.includes(query) || author.includes(query);
 	});
 	const filteredNewspapers = cms.newspapers.filter(newspaper => newspaper.title.toLowerCase().includes(query));
@@ -13,7 +13,7 @@
 	for (article of cms.articles) {
 		if (article.tags) {
 			for (tag of article.tags) {
-				tag = tag.toLowerCase();
+				tag = tag.trim().toLowerCase();
 				if (!tags[tag]) {
 					tags[tag] = [];
 				};
@@ -25,7 +25,7 @@
 	for (tag of Object.keys(tags).sort()) {
 		sortedTagsObj[tag] = tags[tag];
 	};
-	const filteredTags = Object.keys(tags).filter(tag => tag.toLowerCase().includes(query));
+	const filteredTags = Object.keys(tags).filter(tag => tag.trim().toLowerCase().includes(query));
 	const filteredPolls = cms.polls.filter(poll => {
 		const question = poll.question.toLowerCase();
 		const description = poll.description.toLowerCase();
@@ -34,7 +34,7 @@
 	const filteredArtworks = cms.artworks.filter(artwork => {
 		const title = artwork.title.toLowerCase();
 		const description = artwork.description.toLowerCase();
-		const author = artwork.author.toLowerCase();
+		const author = artwork.author.trim().toLowerCase();
 		return title.includes(query) || description.includes(query) || author.includes(query);
 	});
 	function ifYesterday(date) { 
@@ -68,12 +68,12 @@
 				<div class=" inner">
 				<h3>Article: <%= article.title %></h3>
 				<% if (article.description != null) { %><h4><% if (article.description.length > 50) { %><%= article.description.slice(0, 47) %>...<% } else { %><%= article.description %><% } %></h4><% } %>
-				<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article.author != "") && (article.author != null)) { %> / <%= article.author %><% } %></p>
+				<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article.author != "") && (article.author != null)) { %> / <%= article.author.trim() %><% } %></p>
 		</div>
 		</a>
 		<% }); %>
 		<% filteredTags.sort((a, b) => a.localeCompare(b)).forEach(tag => { %>
-		<a class="article" href="<%- vars.domain %>/tags/<%= tag.replaceAll(" ", "-") %>" title="Tag: <%= tag %>">
+		<a class="article" href="<%- vars.domain %>/tags/<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %>" title="Tag: <%= tag %>">
 			<img src=" " alt="">
 			<div class="inner">
 				<h3>Tag: <%= tag %></h3>
@@ -96,7 +96,7 @@
 			<img loading="lazy" src="<%- vars.asset_prefix %><%= artwork.artwork.path %>" <% if (artwork.artwork.description != "") { %>alt="<%= artwork.artwork.description %>" <% } %> />
 			<div class="inner">
 				<h3>Artwork: <%= artwork.title %></h3>
-				<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article.author != "") && (article.author != null)) { %> / <%= article.author %><% } %></p>
+				<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article.author != "") && (article.author != null)) { %> / <%= article.author.trim() %><% } %></p>
 			</div>
 		</a>
 		<% }); %>

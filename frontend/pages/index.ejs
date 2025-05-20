@@ -41,14 +41,14 @@
 	<div class="articles" style="padding: 100px 0 0 0;">
 		<h2>Latest Articles</h2>
 		<hr>
-		<div class="grid">
-			<% for (let i = 0; i < 3 && i < cms.articles.length; i++) { const article = cms.articles.sort((a, b) => new Date(b.date) - new Date(a.date)).filter(article => !article.unlisted)[i]; %>
-			<a class="article<% if (i % 3 === 0) { %> left<% } else if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } else if ((i - 2) % 3 === 0) { %> right<% } %>" href="<%- vars.domain %>/articles/<%= new Date(article.date).getFullYear() %>/<%= vars.slugify(article.slug) %>" title="<%= article.title %>" style="border-bottom: none">
+		<div class="grid hideBorder<%= cms.articles.slice(0, 6).length % 3 %>">
+			<% for (let i = 0; i < 6 && i < cms.articles.length; i++) { const article = cms.articles.sort((a, b) => new Date(b.date) - new Date(a.date)).filter(article => !article.unlisted)[i]; %>
+			<a class="article<% if (i % 3 === 0) { %> left<% } else if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } else if ((i - 2) % 3 === 0) { %> right<% } %>" href="<%- vars.domain %>/articles/<%= new Date(article.date).getFullYear() %>/<%= vars.slugify(article.slug) %>" title="<%= article.title %>">
 				<div class="inner">
 					<img src="<% if (article.images[0] != null) { %><%- vars.asset_prefix %><%= article.images[0].path %>" <% if ((article.images[0].height / article.images[0].width) > 0.60) { %>style="width: min-content;" <% if (article.images[0].description != "") { %>alt="<%= article.images[0].description %>" <% } %><% } } else { %> "<% } %> />
 					<h3><%= article.title %></h3>
 					<% if (article.description != null) { %><h4><% if (article.description.length > 50) { %><%= article.description.slice(0, 47) %>...<% } else { %><%= article.description %><% } %></h4><% } %>
-					<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article.author != "") && (article.author != null)) { %> / <%= article.author %><% } %></p>
+					<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article.author != "") && (article.author != null)) { %> / <%= article.author.trim() %><% } %></p>
 				</div>
 			</a>
 			<% } %>
@@ -65,7 +65,7 @@
 							<div class="inner">
 								<img loading="lazy" src="<%- vars.asset_prefix %><%= artwork.artwork.path %>" <% if ((artwork.artwork.height / artwork.artwork.width) > 0.60) { %>style="width: min-content;" <% } %><% if (artwork.artwork.description != "") { %>alt="<%= artwork.artwork.description %>" <% } %> />
 								<h3><%= artwork.title %></h3>
-								<p><% var date = new Date(artwork.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((artwork.author != "") && (artwork.author != null)) { %> / <%= artwork.author %><% } %></p>
+								<p><% var date = new Date(artwork.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((artwork.author != "") && (artwork.author != null)) { %> / <%= artwork.author.trim() %><% } %></p>
 							</div>
 						</a>
 						<% } %>

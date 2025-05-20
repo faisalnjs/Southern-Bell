@@ -36,7 +36,7 @@
 				<div class="author">
 					<img src="<%- vars.asset_prefix %><%= cms.siteDetails[0].favicon.path %>" alt="Author" />
 					<div class="info">
-						<h4>By <% if ((poll.author != "") && (poll.author != null)) { %><%= poll.author %><% } else { %><a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a> Writers, <a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a><% } %></h4>
+						<h4>By <% if ((poll.author != "") && (poll.author != null)) { %><%= poll.author.trim() %><% } else { %><a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a> Writers, <a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a><% } %></h4>
 						<h5>Published <% var date = new Date(poll.date); if (date.isToday()) { %>today<% } else if (ifYesterday(date)) { %>yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %></h5>
 						<% if ((poll._created != poll._modified) && (date < (new Date(poll._modified * 1000)))) { %><h5>Edited <% var date = new Date(poll._modified * 1000); if (date.isToday()) { %>today<% } else if (ifYesterday(date)) { %>yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %></h5><% } } %>
 					</div>

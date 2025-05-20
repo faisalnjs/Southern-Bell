@@ -23,12 +23,21 @@
 					<h1><%= article.title %></h1>
 					<% if (article.description != null) { %><h3><%= article.description %></h3><% } %>
 					<h5><%= pageviews %> Views | Published <% var date = new Date(article.date); if (date.isToday()) { %>today<% } else if (ifYesterday(date)) { %>yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((article._created != article._modified) && (date < (new Date(article._modified * 1000)))) { %> | Edited <% var date = new Date(article._modified * 1000); if (date.isToday()) { %>today<% } else if (ifYesterday(date)) { %>yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } } %></h5>
-					<% if (article.tags != null) { %><p>Tags: <% for (tag of article.tags) { %><a href="<%- vars.domain %>/tags/<%= tag.replaceAll(" ", "-") %>" title="#<%= tag.toLowerCase().replaceAll(" ", "-") %>">#<%= tag.toLowerCase().replaceAll(" ", "-") %></a> <% } %></p><% } %>
+					<% if (article.tags != null) { %><p>Tags: <% for (tag of article.tags) { %><a href="<%- vars.domain %>/tags/<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %>" title="#<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %>">#<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %></a> <% } %></p><% } %>
 				</div>
 				<div class="author">
-					<a href="<%- vars.domain %>/authors/<%= (((article.author != "") && (article.author != null)) ? article.author : cms.siteDetails[0].title).replaceAll(" ", "-").toLowerCase() %>"><img src="<%- vars.asset_prefix %><% if ((article.author != "") && (article.author != null)) { author = cms.authors.find(author => author.name === article.author); if (author) { %><%= author.image.path %><% } else { %><%= cms.siteDetails[0].unknown.path %><% } %><% } else { %><%= cms.siteDetails[0].favicon.path %><% } %>" alt="Author" /></a>
+					<% if ((article.author != "") && (article.author != null) && (article.author.includes(" and ") || article.author.includes(", ") || article.author.includes(" & "))) { authors = article.author.split(/ and |, | & /); var authorNumber = 0; authors.forEach(author => { %>
+					<% if (authorNumber > 0) { %>
+					<div class="stackedAuthor" style="left: <%= authorNumber * 4 %>px; z-index: -<%= authorNumber %>;"><img src="<%- vars.asset_prefix %><% author1 = cms.authors.find(author2 => author2.name.trim() === author.trim()); if (author1) { %><%= author1.image.path %><% } else { %><%= cms.siteDetails[0].unknown.path %><% } %>" alt="<%= author %>" /></div>
+					<% } else { %>
+					<a href="<%- vars.domain %>/authors/<%= author.trim().replaceAll(" ", "-").toLowerCase() %>"><img src="<%- vars.asset_prefix %><% author1 = cms.authors.find(author2 => author2.name.trim() === author.trim()); if (author1) { %><%= author1.image.path %><% } else { %><%= cms.siteDetails[0].unknown.path %><% } %>" alt="<%= author %>" /></a>
+					<% }; authorNumber++; })} else if ((article.author != "") && (article.author != null)) { %>
+					<a href="<%- vars.domain %>/authors/<%= article.author.trim().replaceAll(" ", "-").toLowerCase() %>"><img src="<%- vars.asset_prefix %><% author = cms.authors.find(author => author.name.trim() === article.author.trim()); if (author) { %><%= author.image.path %><% } else { %><%= cms.siteDetails[0].unknown.path %><% } %>" alt="<%= article.author %>" /></a>
+					<% } else { %>
+					<a href="<%- vars.domain %>/authors/<%= (((article.author != "") && (article.author != null)) ? article.author : cms.siteDetails[0].title).trim().replaceAll(" ", "-").toLowerCase() %>"><img src="<%- vars.asset_prefix %><% if ((article.author != "") && (article.author != null)) { author = cms.authors.find(author => author.name.trim() === article.author.trim()); if (author) { %><%= author.image.path %><% } else { %><%= cms.siteDetails[0].unknown.path %><% } %><% } else { %><%= cms.siteDetails[0].favicon.path %><% } %>" alt="Author" /></a>
+					<% } %>
 					<div class="info">
-						<h4><% if ((article.author != "") && (article.author != null)) { %><%= article.author %><% } else { %><%= cms.siteDetails[0].title %><% } %></h4>
+						<h4><% if ((article.author != "") && (article.author != null)) { %><%= article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %><% } %></h4>
 						<h5><a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a> - Writer<% if ((article.author != "") && (article.author != null)) { %><% } else { %>s<% } %></h5>
 					</div>
 				</div>
@@ -50,7 +59,7 @@
 				<ul class="splide__list">
 					<% n = 0; for (image of article.images) { %>
 					<a class="splide__slide" href="<%- vars.asset_prefix %><%= image.path %>" data-lightbox="<%= image._id %>" style="max-height: 600px;">
-						<img <% if (n > 2) { %>loading="lazy"<% } %> src="<%- vars.asset_prefix %><%= image.path %>" alt="<%= image.description %>">
+						<img <% if (n > 2) { %>loading="lazy" <% } %> src="<%- vars.asset_prefix %><%= image.path %>" alt="<%= image.description %>">
 						<div>
 							<%= image.description %>
 						</div>
@@ -62,7 +71,7 @@
 		<% } %>
 		<% if ((article.content != null) && (article.content != '')) { %>
 		<div class="content">
-			<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
+			<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
 			<%- article.content.replaceAll('<img src="/', '<img loading="lazy" src="' + vars.asset_url) %>
 		</div>
 		<% } %>

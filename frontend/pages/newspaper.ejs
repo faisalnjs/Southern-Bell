@@ -19,13 +19,13 @@
 					<h1><%= newspaper.title %></h1>
 					<h3><%= newspaper.description %></h3>
 					<h5><%= pageviews %> Views | Published <% var date = new Date(newspaper.date); if (date.isToday()) { %>today<% } else if (ifYesterday(date)) { %>yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((newspaper._created != newspaper._modified) && (date < (new Date(newspaper._modified * 1000)))) { %> | Edited <% var date = new Date(newspaper._modified * 1000); if (date.isToday()) { %>today<% } else if (ifYesterday(date)) { %>yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } } %></h5>
-					<% if (newspaper.tags != null) { %><p>Tags: <% for (tag of newspaper.tags) { %><a href="<%- vars.domain %>/tags/<%= tag.replaceAll(" ", "-") %>" title="#<%= tag.toLowerCase().replaceAll(" ", "-") %>">#<%= tag.toLowerCase().replaceAll(" ", "-") %></a> <% } %></p><% } %>
+					<% if (newspaper.tags != null) { %><p>Tags: <% for (tag of newspaper.tags) { %><a href="<%- vars.domain %>/tags/<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %>" title="#<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %>">#<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %></a> <% } %></p><% } %>
 				</div>
 				<div class="author">
 					<img src="<%- vars.asset_prefix %><%= cms.siteDetails[0].favicon.path %>" alt="Author" />
 					<div class="info">
 						<h4><%= cms.siteDetails[0].title %></h4>
-						<h5><a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a> - Writers</h5>
+						<h5><a href="<%- vars.domain %>" title="<%= cms.siteDetails[0].title %>"><%= cms.siteDetails[0].title %></a> - Multiple Writers</h5>
 					</div>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 					<% } %>
 					<h2><%= article.title %></h2>
 					<% if ((article.content != null) && (article.content != '')) { %>
-					<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
+					<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
 					<%- article.content.replaceAll('<img src="/', `<img ${(n > 2) ? 'loading="lazy"' : ''} src="${vars.asset_url}`) %>
 					<% } %>
 				</div>
@@ -97,7 +97,7 @@
 				<% } %>
 				<h2><%= article.title %></h2>
 				<% if ((article.content != null) && (article.content != '')) { %>
-				<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
+				<b><% if (article.content.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('&nbsp;', '').replaceAll(' ', '') != '') { %>(<% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %>) —<% } else { %><% if ((article.author != "") && (article.author != null)) { %><%- article.author.trim() %><% } else { %><%= cms.siteDetails[0].title %> Writers<% } %><% } %></b>
 				<%- article.content.replaceAll('<img src="/', `<img ${(n > 2) ? 'loading="lazy"' : ''} src="${vars.asset_url}`) %>
 				<% } %>
 			</div>

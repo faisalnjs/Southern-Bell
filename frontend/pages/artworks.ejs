@@ -19,12 +19,12 @@
 	<div class="articles">
 		<div class="grid hideBorder<%= cms.artworks.length % 3 %>">
 			<% const artworks = cms.artworks.sort((a, b) => new Date(b.date) - new Date(a.date)); for (let i = 0; i < artworks.length; i++) { const artwork = artworks[i]; %>
-			<a class="article<% if (i % 3 === 0) { %> left<% } else if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } else if ((i - 2) % 3 === 0) { %> right<% } %>" href="<%- vars.domain %>/artworks/<%= vars.slugify(artwork.slug) %>" title="<%= artwork.title %>">
+			<a class="article<% if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } %>" href="<%- vars.domain %>/artworks/<%= vars.slugify(artwork.slug) %>" title="<%= artwork.title %>">
 				<div class="inner">
 					<img <% if (i > 6) { %>loading="lazy"<% } %> src="<% if (artwork.artwork != null) { %><%- vars.asset_prefix %><%= artwork.artwork.path %>" <% if ((artwork.artwork.height / artwork.artwork.width) > 0.60) { %>style="width: min-content;" <% if (artwork.artwork.description != "") { %>alt="<%= artwork.artwork.description %>" <% } %><% } } else { %> "<% } %> />
 					<h3><%= artwork.title %></h3>
 					<% if (artwork.description != null) { %><h4><% if (artwork.description.length > 50) { %><%= artwork.description.slice(0, 47) %>...<% } else { %><%= artwork.description %><% } %></h4><% } %>
-					<p><% var date = new Date(artwork.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((artwork.author != "") && (artwork.author != null)) { %> / <%= artwork.author %><% } %></p>
+					<p><% var date = new Date(artwork.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %><% if ((artwork.author != "") && (artwork.author != null)) { %> / <%= artwork.author.trim() %><% } %></p>
 				</div>
 			</a>
 			<% } %>

@@ -11,7 +11,7 @@
 	for (article of cms.articles) {
 		if (article.tags && !article.unlisted) {
 			for (tag of article.tags) {
-				tag = tag.toLowerCase();
+				tag = tag.trim().toLowerCase();
 				if (!tags[tag]) {
 					tags[tag] = [];
 				};
@@ -41,9 +41,9 @@
 	<div class="articles">
 		<div class="grid hideBorder<%= Object.keys(tags).length % 3 %> hideBorderTopBottom">
 			<% if (Object.keys(tags).length != 0) { for (let i = 0; i < Object.keys(tags).length; i++) { const tag = Object.keys(tags)[i]; %>
-			<a class="article<% if (i % 3 === 0) { %> left<% } else if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } else if ((i - 2) % 3 === 0) { %> right<% } %>" href="<%- vars.domain %>/tags/<%= tag.toLowerCase().replaceAll(" ", "-") %>" title="#<%= tag.toLowerCase().replaceAll(" ", "-") %>">
+			<a class="article<% if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } %>" href="<%- vars.domain %>/tags/<%= tag.trim().toLowerCase().replaceAll(" ", "-") %>" title="#<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %>">
 				<div class="inner">
-					<h3><%= tag.toLowerCase().replaceAll(" ", "-") %></h3>
+					<h3><%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %></h3>
 					<p><%- tags[tag].length %> Article<% if (tags[tag].length != 1) { %>s<% } %></p>
 				</div>
 			</a>

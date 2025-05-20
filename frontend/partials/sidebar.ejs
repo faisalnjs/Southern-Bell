@@ -11,7 +11,7 @@
     for (article of cms.articles) {
         if (article.tags && !article.unlisted) {
             for (tag of article.tags) {
-                tag = tag.toLowerCase();
+                tag = tag.trim().toLowerCase();
                 if (!tags[tag]) {
                     tags[tag] = [];
                 };
@@ -30,7 +30,7 @@
 	<h3>Popular Tags</h3>
 	<ul>
 		<% for (let i = 0; i < Object.keys(tags).length; i++) { const tag = Object.keys(tags)[i]; %>
-		<li><a href="<%- vars.domain %>/tags/<%= tag.toLowerCase().replaceAll(" ", "-") %>">#<%= tag.toLowerCase().replaceAll(" ", "-") %> (<%= tags[tag].length %>)</a></li>
+		<li><a href="<%- vars.domain %>/tags/<%= tag.trim().toLowerCase().replaceAll(" ", "-") %>">#<%= tag.trim().toLowerCase().replaceAll(" ", "-").replaceAll("#", "") %> (<%= tags[tag].length %>)</a></li>
 		<% } %>
 	</ul>
 	<% } %>
