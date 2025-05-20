@@ -58,7 +58,7 @@ a {
 }
 
 a:hover {
-	filter: brightness(0.75);
+	opacity: 0.75;
 	color: var(--theme);
 }
 
@@ -815,6 +815,11 @@ body:has(.alert) .loading {
 	align-items: center;
 	gap: 20px;
 	position: relative;
+}
+
+.article-i .split .left .author a:hover {
+	opacity: 1;
+	filter: brightness(0.75);
 }
 
 .article-i .split .left .author .stackedAuthor {

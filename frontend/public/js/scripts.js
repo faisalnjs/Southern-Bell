@@ -62,6 +62,7 @@ function load() {
         document.querySelector('.loading').remove();
     } catch { };
     document.querySelector('footer').style.paddingTop = `calc(100vh - ${document.querySelector('footer .inner').clientHeight}px)`;
+    document.head.querySelector('title').innerText = document.querySelector('page-title').innerText;
 };
 
 load();
@@ -94,7 +95,7 @@ document.addEventListener('pjax:send', (a) => {
     loading.classList = "loading";
     loading.src = domain + "/images/loading.png";
     document.body.appendChild(loading);
-    if (a.triggerElement.href.includes('admin')) window.open(a.triggerElement.href, '_blank');
+    if (a.triggerElement && a.triggerElement.href.includes('admin')) window.open(a.triggerElement.href, '_blank');
 });
 
 document.addEventListener('pjax:complete', load);
