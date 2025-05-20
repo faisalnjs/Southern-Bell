@@ -665,6 +665,16 @@ body:has(.alert) .loading {
 	border-left: 1px solid #c7c7c7;
 }
 
+.articles .grid .article.middle {
+	border-left: 1px solid var(--text);
+	border-right: 1px solid var(--text);
+}
+
+.articles.individual .grid .article.middle {
+	border-left: 1px solid #c7c7c7;
+	border-right: 1px solid #c7c7c7;
+}
+
 .articles .grid .article .inner {
 	display: flex;
 	flex-direction: column;

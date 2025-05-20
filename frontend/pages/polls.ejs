@@ -19,7 +19,7 @@
 	<div class="articles">
 		<div class="grid hideBorder<%= cms.polls.length % 3 %>">
 			<% const polls = cms.polls.sort((a, b) => new Date(b.date) - new Date(a.date)); for (let i = 0; i < polls.length; i++) { const poll = polls[i]; %>
-			<a class="article<% if (i % 3 === 0) { %> left<% } else if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } else if ((i - 2) % 3 === 0) { %> right<% } %>" href="<%- vars.domain %>/polls/<%= vars.slugify(poll.slug) %>" title="<%= poll.question %>">
+			<a class="article<% if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } %>" href="<%- vars.domain %>/polls/<%= vars.slugify(poll.slug) %>" title="<%= poll.question %>">
 				<div class="inner">
 					<h3><%= poll.question %></h3>
 					<% if (poll.description != null) { %><h4><% if (poll.description.length > 50) { %><%= poll.description.slice(0, 47) %>...<% } else { %><%= poll.description %><% } %></h4><% } %>
