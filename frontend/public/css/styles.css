@@ -58,7 +58,7 @@ a {
 }
 
 a:hover {
-	opacity: 0.75;
+	filter: brightness(0.75);
 	color: var(--theme);
 }
 
@@ -750,6 +750,7 @@ body:has(.alert) .loading {
 .article-i .image,
 .article-i img {
 	box-shadow: var(--theme) 0px 0px 0px 1px;
+    background-color: var(--background);
 	transition: 0.5s;
 	width: 100%;
 }
@@ -803,6 +804,11 @@ body:has(.alert) .loading {
 	display: flex;
 	align-items: center;
 	gap: 20px;
+	position: relative;
+}
+
+.article-i .split .left .author .stackedAuthor {
+	position: absolute;
 }
 
 .article-i .split .left .author img {
