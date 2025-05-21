@@ -649,20 +649,10 @@ body:has(.alert) .loading {
 
 .articles .grid .article.left {
 	padding: 50px 50px 50px 0;
-	border-right: 1px solid var(--text);
-}
-
-.articles.individual .grid .article.left {
-	border-right: 1px solid #c7c7c7;
 }
 
 .articles .grid .article.right {
 	padding: 50px 0 50px 50px;
-	border-left: 1px solid var(--text);
-}
-
-.articles.individual .grid .article.right {
-	border-left: 1px solid #c7c7c7;
 }
 
 .articles .grid .article.middle {
