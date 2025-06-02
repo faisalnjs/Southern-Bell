@@ -80,7 +80,7 @@
 						<% const articles = districtNews.sort((a, b) => new Date(b.date) - new Date(a.date)); for (let i = 0; i < articles.length; i++) { const article = articles[i]; %>
 						<a class="article<% if (i % 3 === 0) { %> left<% } else if (i === 1 || (i - 1) % 3 === 0) { %> middle<% } else if ((i - 2) % 3 === 0) { %> right<% } %>" href="<%= article.link %>" title="<%= article.title.rendered %>">
 							<div class="inner">
-								<h3><%= article.title.rendered %></h3>
+								<h3><%- article.title.rendered %></h3>
 								<% if (article.excerpt.rendered != null) { %><h4><% if (article.excerpt.rendered.length > 50) { %><%- article.excerpt.rendered.slice(0, 47) %>...<% } else { %><%- article.excerpt.rendered %><% } %></h4><% } %>
 								<p><% var date = new Date(article.date); if (date.isToday()) { %>Today<% } else if (ifYesterday(date)) { %>Yesterday<% } else { %><%= date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %><% } %> / VSCHSD</p>
 							</div>
