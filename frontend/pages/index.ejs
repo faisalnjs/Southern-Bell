@@ -8,9 +8,9 @@
 		return date.toDateString() === yesterday.toDateString();
 	}; %>
 	<% cms.newspapers = cms.newspapers.sort((a, b) => new Date(b.date) - new Date(a.date)); %>
-	<% if (cms.newspapers[0]) { %><link rel="preload" as="image" href="<%= vars.asset_prefix %><%= cms.newspapers[0].image.path %>"><% } %>
-	<% if (cms.newspapers[1]) { %><link rel="preload" as="image" href="<%= vars.asset_prefix %><%= cms.newspapers[1].image.path %>"><% } %>
-	<% if (cms.newspapers[2]) { %><link rel="preload" as="image" href="<%= vars.asset_prefix %><%= cms.newspapers[2].image.path %>"><% } %>
+	<% if (cms.newspapers[0] && cms.newspapers[0].image) { %><link rel="preload" as="image" href="<%= vars.asset_prefix %><%= cms.newspapers[0].image.path %>"><% } %>
+	<% if (cms.newspapers[1] && cms.newspapers[1].image) { %><link rel="preload" as="image" href="<%= vars.asset_prefix %><%= cms.newspapers[1].image.path %>"><% } %>
+	<% if (cms.newspapers[2] && cms.newspapers[2].image) { %><link rel="preload" as="image" href="<%= vars.asset_prefix %><%= cms.newspapers[2].image.path %>"><% } %>
 </head>
 
 <body>
