@@ -29,15 +29,11 @@ Nodemon will start a development server at `localhost:3000`
 
 ## Production
 
-This project is hosted on [Dango Web Solutions](https://dangoweb.com/?from=Southern-Bell) cloud hosting - free web hosting for Education.
-
 Files are transferred to the host using the GitHub Action automation workflow at [.github\workflows\prod.yml](https://github.com/faisalnjs/Southern-Bell/tree/prod/.github/workflows/prod.yml).
 
 ![Deploy Node.js App](https://github.com/faisalnjs/Southern-Bell/actions/workflows/prod.yml/badge.svg)
 
 ## CMS
-
-CMS is hosted on [Dango Web Solutions](https://dangoweb.com/?from=Southern-Bell) cloud hosting - free web hosting for Education.
 
 To access the CMS, navigate to the `/admin` path to be redirected to the admin panel.
 
