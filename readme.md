@@ -2,6 +2,8 @@
 
 ![Banner](banner.png)
 
+> This project has been taken offline and is no longer maintained.
+
 Valley Stream South High School's online school newspaper website
 
 - Articles & PDF Newspapers
